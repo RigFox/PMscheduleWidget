@@ -1,0 +1,30 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:padding="@dimen/widget_margin" android:background="#28009cd6"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/imageView"
+        android:contentDescription="Schedule"
+        android:src="@drawable/mon1"
+        android:layout_marginBottom="30dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Следующий день"
+        android:id="@+id/nextButton"
+        android:layout_gravity="right"
+        android:layout_marginTop="-50dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Предыдущий день"
+        android:id="@+id/backButton"
+        android:layout_gravity="left"
+        android:layout_marginTop="-50dp" />
+
+</LinearLayout>
