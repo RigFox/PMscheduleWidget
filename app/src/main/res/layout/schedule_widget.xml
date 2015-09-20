@@ -14,7 +14,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Следующий день"
+        android:text="Вперед"
         android:id="@+id/nextButton"
         android:layout_gravity="right"
         android:layout_marginTop="-50dp" />
@@ -22,7 +22,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Предыдущий день"
+        android:text="Назад"
         android:id="@+id/backButton"
         android:layout_gravity="left"
         android:layout_marginTop="-50dp" />
