@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="header">16sp</dimen>
+    <dimen name="buttonFont">14sp</dimen>
+    <dimen name="subject">16sp</dimen>
+    <dimen name="time">13sp</dimen>
+</resources>

@@ -11,7 +11,8 @@
         android:text="Понедельник"
         android:id="@+id/dayOfWeek"
         android:gravity="center_horizontal"
-        android:layout_marginTop="5dp" />
+        android:layout_marginTop="5dp"
+        android:textSize="@dimen/header" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -21,7 +22,8 @@
         android:id="@+id/numWeek"
         android:layout_gravity="right"
         android:layout_marginTop="-30dp"
-        android:layout_marginRight="5dp" />
+        android:layout_marginRight="5dp"
+        android:textSize="@dimen/header" />
 
     <ListView
         android:layout_width="match_parent"
@@ -47,7 +49,8 @@
             android:id="@+id/backButton"
             android:layout_gravity="left"
             android:layout_marginLeft="5dp"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:textSize="@dimen/buttonFont" />
 
         <Button
             android:layout_width="0dp"
@@ -55,7 +58,8 @@
             android:text="Сегодня"
             android:id="@+id/todayButton"
             android:layout_gravity="center_horizontal"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:textSize="@dimen/buttonFont" />
 
         <Button
             android:layout_width="0dp"
@@ -64,7 +68,8 @@
             android:id="@+id/nextButton"
             android:layout_gravity="right"
             android:layout_weight="1"
-            android:layout_marginRight="5dp" />
+            android:layout_marginRight="5dp"
+            android:textSize="@dimen/buttonFont" />
     </LinearLayout>
 
 </LinearLayout>

@@ -81,11 +81,11 @@ public class MyFactory implements RemoteViewsFactory {
 
             String timeText = "";
             switch (currentItem.num) {
-                case 1: timeText = "8:00-9:35"; break;
-                case 2: timeText = "9:45-11:20"; break;
-                case 3: timeText = "11:30-13:05"; break;
-                case 4: timeText = "13:30-15:05"; break;
-                case 5: timeText = "15:15-16:50"; break;
+                case 1: timeText = "8:00-\n9:35"; break;
+                case 2: timeText = "9:45-\n11:20"; break;
+                case 3: timeText = "11:30-\n13:05"; break;
+                case 4: timeText = "13:30-\n15:05"; break;
+                case 5: timeText = "15:15-\n16:50"; break;
             }
 
             rView.setTextViewText(R.id.subject, subject);
