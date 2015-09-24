@@ -8,8 +8,8 @@ android {
         applicationId "me.rigfox.pmschedulewidget"
         minSdkVersion 14
         targetSdkVersion 23
-        versionCode 1
-        versionName "0.2"
+        versionCode 3
+        versionName "0.3"
     }
     buildTypes {
         release {
@@ -24,4 +24,5 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.0.1'
     compile 'com.loopj.android:android-async-http:1.4.9'
     compile 'com.google.code.gson:gson:2.3.1'
+    compile 'com.android.support:support-v4:23.0.1'
 }

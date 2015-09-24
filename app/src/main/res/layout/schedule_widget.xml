@@ -1,30 +1,70 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
-    android:padding="@dimen/widget_margin" android:background="#28009cd6"
-    android:orientation="vertical">
+    android:padding="@dimen/widget_margin" android:background="#5500aded"
+    android:orientation="vertical"
+    android:id="@+id/widgetbody">
 
-    <ImageView
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/imageView"
-        android:contentDescription="Schedule"
-        android:src="@drawable/mon1"
-        android:layout_marginBottom="30dp" />
+        android:layout_height="30dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Понедельник"
+        android:id="@+id/dayOfWeek"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="5dp" />
 
-    <Button
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Вперед"
-        android:id="@+id/nextButton"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="5 неделя"
+        android:id="@+id/numWeek"
         android:layout_gravity="right"
-        android:layout_marginTop="-50dp" />
+        android:layout_marginTop="-30dp"
+        android:layout_marginRight="5dp" />
 
-    <Button
-        android:layout_width="wrap_content"
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/listView"
+        android:background="#ffffff"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="50dp"
+        android:divider="@drawable/separator"
+        android:footerDividersEnabled="false"
+        android:dividerHeight="1dp" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Назад"
-        android:id="@+id/backButton"
-        android:layout_gravity="left"
-        android:layout_marginTop="-50dp" />
+        android:layout_marginTop="-45dp">
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Назад"
+            android:id="@+id/backButton"
+            android:layout_gravity="left"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="1" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Сегодня"
+            android:id="@+id/todayButton"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Вперед"
+            android:id="@+id/nextButton"
+            android:layout_gravity="right"
+            android:layout_weight="1"
+            android:layout_marginRight="5dp" />
+    </LinearLayout>
 
 </LinearLayout>

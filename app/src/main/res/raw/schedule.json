@@ -1,0 +1,57 @@
+{
+  "subjects": [
+    {"name": "Дифференциальные уравнения", "teacher": "доц. Муртазина С. А.", "classroom": "ауд. 304"},
+    {"name": "Философия", "teacher": "доц. Бадретдинов З. А.", "classroom": "ауд. 304"},
+    {"name": "Математический анализ", "teacher": "доц. Муртазина С. А.", "classroom": "ауд. 304"},
+    {"name": "Языки и методы программирования", "teacher": "доц. Вышинский А. А.", "classroom": "ауд. 304"},
+    {"name": "Языки и методы программирования", "teacher": "доц. Вышинский А. А.", "classroom": "ауд. 301,303"},
+    {"name": "Практикум на ЭВМ", "teacher": "ст. пр. Хисаметдинов Ф. З.", "classroom": "ауд. 301,303"},
+    {"name": "Элективные курсы по физической культуре", "teacher": "проф. Полько Г. М.", "classroom": ""},
+    {"name": "Архитектура компьютеров", "teacher": "ст. пр. Хисаметдинов Ф. З.", "classroom": "ауд. 304"},
+    {"name": "Архитектура компьютеров", "teacher": "ст. пр. Хисаметдинов Ф. З.", "classroom": "ауд. 301,303"},
+    {"name": "Физическая культура", "teacher": "доц. Зулкарнаев А. Б.", "classroom": ""},
+    {"name": "Иностранный язык", "teacher": "доц. Хасанова Г. Н.", "classroom": "ауд. 304"},
+    {"name": "Русский язык и культура речи", "teacher": "доц. Сулейманова А. Р.", "classroom": "ауд. 304"},
+    {"name": "Дифференциальная геометрия", "teacher": "проф. Байзаев С. Б.", "classroom": "ауд. 304"}
+  ],
+  "schedule": [
+    [
+      {"num": 1, "subject_id": 0, "startWeek": 3, "endWeek": 17},
+      {"num": 2, "subject_id": 1, "startWeek": 3, "endWeek": 17},
+      {"num": 3, "subject_id": 2, "startWeek": 3, "endWeek": 17},
+      {"num": 4, "subject_id": 4, "startWeek": 4, "endWeek": 16}
+    ],
+    [
+      {"num": 1, "subject_id": 2, "startWeek": 3, "endWeek": 17},
+      {"num": 2, "subject_id": 0, "startWeek": 3, "endWeek": 17},
+      {"num": 3, "subject_id": 5, "startWeek": 3, "endWeek": 18},
+      {"num": 5, "subject_id": 6, "startWeek": 3, "endWeek": 16}
+    ],
+    [ //Среда
+      {"num": 1, "subject_id": 7, "startWeek": 3, "endWeek": 15},
+      {"num": 1, "subject_id": 8, "startWeek": 16, "endWeek": 18},
+      {"num": 2, "subject_id": 8, "startWeek": 3, "endWeek": 18},
+      {"num": 3, "subject_id": 8, "startWeek": 3, "endWeek": 8},
+      {"num": 3, "subject_id": 5, "startWeek": 9, "endWeek": 18},
+      {"num": 5, "subject_id": 9, "startWeek": 5, "endWeek": 13}
+    ],
+    [
+      {"num": 1, "subject_id": 2, "startWeek": 3, "endWeek": 16},
+      {"num": 2, "subject_id": 2, "startWeek": 3, "endWeek": 17},
+      {"num": 3, "subject_id": 10, "startWeek": 3, "endWeek": 17},
+      {"num": 5, "subject_id": 6, "startWeek": 3, "endWeek": 16}
+    ],
+    [
+      {"num": 1, "subject_id": 11, "startWeek": 3, "endWeek": 11},
+      {"num": 1, "subject_id": 5, "startWeek": 13, "endWeek": 15},
+      {"num": 2, "subject_id": 2, "startWeek": 3, "endWeek": 17},
+      {"num": 3, "subject_id": 1, "startWeek": 3, "endWeek": 16}
+    ],
+    [
+      {"num": 1, "subject_id": 3, "startWeek": 3, "endWeek": 13},
+      {"num": 2, "subject_id": 12, "startWeek": 3, "endWeek": 17},
+      {"num": 3, "subject_id": 12, "startWeek": 9, "endWeek": 10},
+      {"num": 3, "subject_id": 10, "startWeek": 11, "endWeek": 13}
+    ]
+  ]
+}

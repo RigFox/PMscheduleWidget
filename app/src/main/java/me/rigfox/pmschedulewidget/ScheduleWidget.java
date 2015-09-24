@@ -6,12 +6,22 @@ import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.View;
+import android.widget.GridLayout;
+import android.widget.LinearLayout;
 import android.widget.RemoteViews;
+import android.widget.TableRow;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 /**
  * Implementation of App Widget functionality.
@@ -20,74 +30,62 @@ public class ScheduleWidget extends AppWidgetProvider {
 
     final static String ACTION_NEXT = "me.rigfox.PMscheduleWidgetNext";
     final static String ACTION_BACK = "me.rigfox.PMscheduleWidgetBack";
+    final static String ACTION_TODAY = "me.rigfox.PMscheduleWidgetToday";
 
-    final static int[] DAYS = {
-            R.drawable.mon1,
-            R.drawable.tue2,
-            R.drawable.wed3,
-            R.drawable.thu4,
-            R.drawable.fri5,
-            R.drawable.sat6
-    };
+    final static Long MILLISECUNDOFDAY = (long) 86400000;
 
     SharedPreferences sp;
-
-    int day;
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         // There may be multiple widgets active, so update all of them
-        final int N = appWidgetIds.length;
-        for (int i = 0; i < N; i++) {
-            updateAppWidget(context, appWidgetManager, appWidgetIds[i], true);
+        for (int appWidgetId : appWidgetIds) {
+            updateAppWidget(context, appWidgetManager, appWidgetId);
         }
+        super.onUpdate(context, appWidgetManager, appWidgetIds);
     }
 
+    void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
+                                int appWidgetId) {
+        RemoteViews rv = new RemoteViews(context.getPackageName(),
+                R.layout.schedule_widget);
 
-    @Override
-    public void onEnabled(Context context) {
-        // Enter relevant functionality for when the first widget is created
-        SharedPreferences sp = context.getSharedPreferences("WidgetDay", context.MODE_PRIVATE);
+        setUpdateTV(rv, context, appWidgetId);
+        setList(rv, context, appWidgetId);
 
-        SharedPreferences.Editor editor = sp.edit();
-
-        editor.putInt("day", 0);
-        editor.apply();
+        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId,
+                R.id.listView);
+        appWidgetManager.updateAppWidget(appWidgetId, rv);
     }
 
-    @Override
-    public void onDisabled(Context context) {
-        // Enter relevant functionality for when the last widget is disabled
-    }
+    void setUpdateTV(RemoteViews rv, Context context, int appWidgetId) {
+        sp = context.getSharedPreferences("WidgetDay", Context.MODE_PRIVATE);
 
-    static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
-                                int appWidgetId, boolean systemUpdate) {
+        Long timestamp = sp.getLong("timestamp", System.currentTimeMillis());
 
-        SharedPreferences sp = context.getSharedPreferences("WidgetDay", context.MODE_PRIVATE);
+        Date date = new Date(timestamp);
+        GregorianCalendar calendar = new GregorianCalendar();
+        calendar.setTime(date);
 
-        int day = sp.getInt("day", 0);
+        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)-2;
 
-        if (systemUpdate) {
-            // Обновление вызвано системой
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(new Date());
-            int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+        String dayOfWeekString = "";
 
-            //Пон = 2, поэтому отнимаем 2
-            dayOfWeek-=2;
-            if (dayOfWeek == -1) {
-                //Превращаем воскресенье в понедельник
-                dayOfWeek = 0;
-            }
-
-            day = dayOfWeek;
-            sp.edit().putInt("day", day).commit();
+        switch (dayOfWeek) {
+            case 0: dayOfWeekString = "Понедельник"; break;
+            case 1: dayOfWeekString = "Вторник"; break;
+            case 2: dayOfWeekString = "Среда"; break;
+            case 3: dayOfWeekString = "Четверг"; break;
+            case 4: dayOfWeekString = "Пятница"; break;
+            case 5: dayOfWeekString = "Суббота"; break;
         }
 
-        // Construct the RemoteViews object
-        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.schedule_widget);
+        int dayOfYear = calendar.get(Calendar.WEEK_OF_YEAR) - 35;
 
-        views.setImageViewResource(R.id.imageView, DAYS[day]);
+        String numWeek = String.valueOf(dayOfYear) + " неделя";
+
+        rv.setTextViewText(R.id.dayOfWeek, dayOfWeekString);
+        rv.setTextViewText(R.id.numWeek, numWeek);
 
         // Задаем отложенный Intent для кнопки вперед
         Intent nextIntent = new Intent(context, ScheduleWidget.class);
@@ -95,7 +93,7 @@ public class ScheduleWidget extends AppWidgetProvider {
         nextIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
         PendingIntent pIntent = PendingIntent.getBroadcast(context, appWidgetId, nextIntent, 0);
 
-        views.setOnClickPendingIntent(R.id.nextButton, pIntent);
+        rv.setOnClickPendingIntent(R.id.nextButton, pIntent);
 
         // Задаем отложенный Intent для кнопки назад
         Intent backIntent = new Intent(context, ScheduleWidget.class);
@@ -103,10 +101,24 @@ public class ScheduleWidget extends AppWidgetProvider {
         backIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
         pIntent = PendingIntent.getBroadcast(context, appWidgetId, backIntent, 0);
 
-        views.setOnClickPendingIntent(R.id.backButton, pIntent);
+        rv.setOnClickPendingIntent(R.id.backButton, pIntent);
 
-        // Instruct the widget manager to update the widget
-        appWidgetManager.updateAppWidget(appWidgetId, views);
+        // Задаем отложенный Intent для кнопки сегодня
+        Intent todayIntent = new Intent(context, ScheduleWidget.class);
+        todayIntent.setAction(ACTION_TODAY);
+        todayIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+        pIntent = PendingIntent.getBroadcast(context, appWidgetId, todayIntent, 0);
+
+        rv.setOnClickPendingIntent(R.id.todayButton, pIntent);
+
+    }
+
+    void setList(RemoteViews rv, Context context, int appWidgetId) {
+        Intent adapter = new Intent(context, MyService.class);
+        adapter.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+        Uri data = Uri.parse(adapter.toUri(Intent.URI_INTENT_SCHEME));
+        adapter.setData(data);
+        rv.setRemoteAdapter(R.id.listView, adapter);
     }
 
     public void onReceive(Context context, Intent intent) {
@@ -125,21 +137,27 @@ public class ScheduleWidget extends AppWidgetProvider {
 
             }
             if (mAppWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
-                sp = context.getSharedPreferences("WidgetDay", context.MODE_PRIVATE);
+                sp = context.getSharedPreferences("WidgetDay", Context.MODE_PRIVATE);
 
-                day = sp.getInt("day", 0);
+                SharedPreferences.Editor editor = sp.edit();
 
-                if (day < 5) {
-                    day++;
-                } else {
-                    day = 0;
+                Long timestamp = sp.getLong("timestamp", System.currentTimeMillis());
+
+                Date date = new Date(timestamp);
+                GregorianCalendar calendar = new GregorianCalendar();
+                calendar.setTime(date);
+
+                Long addMS = MILLISECUNDOFDAY;
+
+                if (calendar.get(Calendar.DAY_OF_WEEK) == 7) { //Проверка на cубботу
+                    addMS *= 2;
                 }
 
-                sp.edit().putInt("day", day).commit();
+                editor.putLong("timestamp", timestamp+addMS);
+                editor.apply();
 
-                // Обновляем виджет
                 updateAppWidget(context, AppWidgetManager.getInstance(context),
-                        mAppWidgetId, false);
+                        mAppWidgetId);
             }
         }
 
@@ -155,23 +173,78 @@ public class ScheduleWidget extends AppWidgetProvider {
 
             }
             if (mAppWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
-                sp = context.getSharedPreferences("WidgetDay", context.MODE_PRIVATE);
+                sp = context.getSharedPreferences("WidgetDay", Context.MODE_PRIVATE);
 
-                day = sp.getInt("day", 0);
+                SharedPreferences.Editor editor = sp.edit();
 
-                if (day > 0) {
-                    day--;
-                } else {
-                    day = 5;
+                Long timestamp = sp.getLong("timestamp", System.currentTimeMillis());
+
+                Date date = new Date(timestamp);
+                GregorianCalendar calendar = new GregorianCalendar();
+                calendar.setTime(date);
+
+                Long addMS = -MILLISECUNDOFDAY;
+
+                if (calendar.get(Calendar.DAY_OF_WEEK) == 2) { //Проверка на понедельник
+                    addMS *= 2;
                 }
 
-                sp.edit().putInt("day", day).commit();
+                editor.putLong("timestamp", timestamp+addMS);
+                editor.apply();
 
-                // Обновляем виджет
                 updateAppWidget(context, AppWidgetManager.getInstance(context),
-                        mAppWidgetId, false);
+                        mAppWidgetId);
+            }
+        }
+
+        if (intent.getAction().equalsIgnoreCase(ACTION_TODAY)) {
+
+            // извлекаем ID экземпляра
+            int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
+            Bundle extras = intent.getExtras();
+            if (extras != null) {
+                mAppWidgetId = extras.getInt(
+                        AppWidgetManager.EXTRA_APPWIDGET_ID,
+                        AppWidgetManager.INVALID_APPWIDGET_ID);
+
+            }
+            if (mAppWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
+                sp = context.getSharedPreferences("WidgetDay", Context.MODE_PRIVATE);
+
+                SharedPreferences.Editor editor = sp.edit();
+
+                GregorianCalendar calendar = new GregorianCalendar();
+
+                Long timestamp = System.currentTimeMillis();
+
+                if (calendar.get(Calendar.DAY_OF_WEEK) == 1) { //Проверка на воскресенье
+                    timestamp += MILLISECUNDOFDAY;
+                }
+
+                editor.putLong("timestamp", timestamp);
+                editor.apply();
+
+                updateAppWidget(context, AppWidgetManager.getInstance(context),
+                        mAppWidgetId);
             }
         }
     }
-}
 
+    @Override
+    public void onEnabled(Context context) {
+        sp = context.getSharedPreferences("WidgetDay", Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = sp.edit();
+
+        GregorianCalendar calendar = new GregorianCalendar();
+
+        Long timestamp = System.currentTimeMillis();
+
+        if (calendar.get(Calendar.DAY_OF_WEEK) == 1) { //Проверка на воскресенье
+            timestamp += MILLISECUNDOFDAY;
+        }
+
+        editor.putLong("timestamp", timestamp);
+        editor.apply();
+    }
+}
