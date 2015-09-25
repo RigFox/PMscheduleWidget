@@ -8,16 +8,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.View;
-import android.widget.GridLayout;
-import android.widget.LinearLayout;
+import android.support.annotation.NonNull;
 import android.widget.RemoteViews;
-import android.widget.TableRow;
-import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -121,7 +113,7 @@ public class ScheduleWidget extends AppWidgetProvider {
         rv.setRemoteAdapter(R.id.listView, adapter);
     }
 
-    public void onReceive(Context context, Intent intent) {
+    public void onReceive(@NonNull Context context, @NonNull Intent intent) {
         super.onReceive(context, intent);
 
         // Проверяем, что это Intent кнопки вперед

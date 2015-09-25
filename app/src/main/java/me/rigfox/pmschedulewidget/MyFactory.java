@@ -1,18 +1,17 @@
 package me.rigfox.pmschedulewidget;
 
+import android.appwidget.AppWidgetManager;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.widget.RemoteViews;
+import android.widget.RemoteViewsService.RemoteViewsFactory;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-
-import android.appwidget.AppWidgetManager;
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.util.Log;
-import android.widget.RemoteViews;
-import android.widget.RemoteViewsService.RemoteViewsFactory;
 
 public class MyFactory implements RemoteViewsFactory {
 
