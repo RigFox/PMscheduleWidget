@@ -80,9 +80,15 @@ public class ScheduleWidget extends AppWidgetProvider {
                 break;
         }
 
-        int dayOfYear = calendar.get(Calendar.WEEK_OF_YEAR) - 35;
+        int currentWeek = calendar.get(Calendar.WEEK_OF_YEAR);
 
-        String numWeek = String.valueOf(dayOfYear) + " неделя";
+        if (currentWeek < 35) {
+            currentWeek += 17 + 35;
+        }
+
+        int weekOfYear = currentWeek - 35;
+
+        String numWeek = String.valueOf(weekOfYear) + " неделя";
 
         rv.setTextViewText(R.id.dayOfWeek, dayOfWeekString);
         rv.setTextViewText(R.id.numWeek, numWeek);

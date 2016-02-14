@@ -76,15 +76,25 @@ public class MyFactory implements RemoteViewsFactory {
             String teacher = subjectItm.teacher;
             String classroom = subjectItm.classroom;
 
-            String week = "("+startWeek+"-"+endWeek+")\n"+classroom;
+            String week = "(" + startWeek + "-" + endWeek + ")\n" + classroom;
 
             String timeText = "";
             switch (currentItem.num) {
-                case 1: timeText = "8:00-\n9:35"; break;
-                case 2: timeText = "9:45-\n11:20"; break;
-                case 3: timeText = "11:30-\n13:05"; break;
-                case 4: timeText = "13:30-\n15:05"; break;
-                case 5: timeText = "15:15-\n16:50"; break;
+                case 1:
+                    timeText = "8:00-\n9:35";
+                    break;
+                case 2:
+                    timeText = "9:45-\n11:20";
+                    break;
+                case 3:
+                    timeText = "11:30-\n13:05";
+                    break;
+                case 4:
+                    timeText = "13:30-\n15:05";
+                    break;
+                case 5:
+                    timeText = "15:15-\n16:50";
+                    break;
             }
 
             rView.setTextViewText(R.id.subject, subject);
@@ -116,13 +126,20 @@ public class MyFactory implements RemoteViewsFactory {
         GregorianCalendar calendar = new GregorianCalendar();
         calendar.setTime(date);
 
-        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)-2;
-        int numWeek = calendar.get(Calendar.WEEK_OF_YEAR) - 35;
+        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK) - 2;
+
+        int currentWeek = calendar.get(Calendar.WEEK_OF_YEAR);
+
+        if (currentWeek < 35) {
+            currentWeek += 17 + 35;
+        }
+
+        int numWeek = currentWeek - 35;
 
         scheduleData.clear();
 
         int countSubject = container.schedule.get(dayOfWeek).size();
-        int numLastSubject = container.schedule.get(dayOfWeek).get(countSubject-1).num;
+        int numLastSubject = container.schedule.get(dayOfWeek).get(countSubject - 1).num;
 
         scheduleItem emptyItem = new scheduleItem();
         emptyItem.subject_id = -1;
@@ -132,16 +149,16 @@ public class MyFactory implements RemoteViewsFactory {
         }
 
         int lastSubject = 0;
-        for (scheduleItem i: container.schedule.get(dayOfWeek)) {
+        for (scheduleItem i : container.schedule.get(dayOfWeek)) {
             if ((numWeek >= i.startWeek) && (i.endWeek >= numWeek)) {
                 scheduleData.set(i.num - 1, i);
                 lastSubject = i.num;
             }
         }
 
-        int countDelete = numLastSubject-lastSubject;
+        int countDelete = numLastSubject - lastSubject;
 
-        for (int i = numLastSubject-1; i > numLastSubject-1-countDelete; i--) {
+        for (int i = numLastSubject - 1; i > numLastSubject - 1 - countDelete; i--) {
             scheduleData.remove(i);
         }
     }
