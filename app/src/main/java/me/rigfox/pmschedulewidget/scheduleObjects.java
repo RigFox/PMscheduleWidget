@@ -16,24 +16,25 @@ import java.util.ArrayList;
 
 class subjectItem {
     public String name;
-    public String teacher;
-    public String classroom;
+    String teacher;
+    String classroom;
 }
 
 class scheduleItem {
-    public int num;
-    public int subject_id;
-    public int startWeek;
-    public int endWeek;
+    int num;
+    int subject_id;
+    int startWeek;
+    int endWeek;
+    boolean isAlternation;
 }
 
 class scheduleContainer {
-    public ArrayList<subjectItem> subjects;
-    public ArrayList<ArrayList<scheduleItem>> schedule;
+    ArrayList<subjectItem> subjects;
+    ArrayList<ArrayList<scheduleItem>> schedule;
 }
 
 class scheduleGenerator {
-    public scheduleContainer container;
+    scheduleContainer container;
 
     scheduleGenerator(Context context) throws IOException {
         InputStream is = context.getResources().openRawResource(R.raw.schedule);

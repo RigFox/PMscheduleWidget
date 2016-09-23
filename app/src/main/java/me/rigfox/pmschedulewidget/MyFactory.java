@@ -13,16 +13,15 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-public class MyFactory implements RemoteViewsFactory {
+class MyFactory implements RemoteViewsFactory {
 
-    scheduleContainer container;
-    ArrayList<scheduleItem> scheduleData;
-    Context context;
-    int widgetID;
+    private scheduleContainer container;
+    private ArrayList<scheduleItem> scheduleData;
+    private Context context;
 
     MyFactory(Context ctx, Intent intent) {
         context = ctx;
-        widgetID = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
+        intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
                 AppWidgetManager.INVALID_APPWIDGET_ID);
     }
 
@@ -76,7 +75,11 @@ public class MyFactory implements RemoteViewsFactory {
             String teacher = subjectItm.teacher;
             String classroom = subjectItm.classroom;
 
-            String week = "(" + startWeek + "-" + endWeek + ")\n" + classroom;
+            String week = "(" + startWeek + "-" + endWeek + ")\n";
+            if (currentItem.isAlternation) {
+                week += "черд.";
+            }
+            week += "\n" + classroom;
 
             String timeText = "";
             switch (currentItem.num) {
@@ -138,11 +141,15 @@ public class MyFactory implements RemoteViewsFactory {
 
         scheduleData.clear();
 
-        int countSubject = container.schedule.get(dayOfWeek).size();
-        int numLastSubject = container.schedule.get(dayOfWeek).get(countSubject - 1).num;
-
         scheduleItem emptyItem = new scheduleItem();
         emptyItem.subject_id = -1;
+
+        int countSubject = container.schedule.get(dayOfWeek).size();
+
+        int numLastSubject = 0;
+        if (countSubject != 0) {
+            numLastSubject = container.schedule.get(dayOfWeek).get(countSubject - 1).num;
+        }
 
         for (int i = 0; i < numLastSubject; i++) {
             scheduleData.add(emptyItem);
@@ -151,8 +158,15 @@ public class MyFactory implements RemoteViewsFactory {
         int lastSubject = 0;
         for (scheduleItem i : container.schedule.get(dayOfWeek)) {
             if ((numWeek >= i.startWeek) && (i.endWeek >= numWeek)) {
-                scheduleData.set(i.num - 1, i);
-                lastSubject = i.num;
+                if (i.isAlternation) {
+                    if (numWeek % 2 == i.startWeek % 2) {
+                        scheduleData.set(i.num - 1, i);
+                        lastSubject = i.num;
+                    }
+                } else {
+                    scheduleData.set(i.num - 1, i);
+                    lastSubject = i.num;
+                }
             }
         }
 
